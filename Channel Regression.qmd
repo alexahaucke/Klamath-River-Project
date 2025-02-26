@@ -1,0 +1,40 @@
+---
+title: "River Geometry Modeling"
+author: "Alexa Haucke"
+format: html
+editor: visual
+---
+
+## Initial Regression
+
+``` r
+```
+
+The data we currently have has been provided by Oregon Department of Fish and Wildlife (survey data) and Dan Miller (synthetic channel network). "ACW" and "ACH" refer to the surveyed active channel width and height, respectively. "Area" refers to the estimated contributing area of the channel. For the purposes of the surveys, the active channel is considered the bankfull stage.
+
+```{r}
+library(stats)
+library(stats4)
+library(ggplot2)
+
+channels <- read.csv("Full_Matched_Sprague_Reaches.csv")
+width_coefficient <- cor.test(channels$ACW, channels$AREA_SQKM)
+width_coefficient$estimate
+
+height_coefficient <- cor.test(channels$ACH, channels$AREA_SQKM)
+height_coefficient$estimate
+
+height_plot <- ggplot(channels,aes(x=AREA_SQKM))+
+  geom_point(aes(y=ACH), col = 'red') 
+
+height_plot
+  
+width_plot <- ggplot(channels,aes(x=AREA_SQKM))+
+  geom_point(aes(y=ACW), col = 'blue')
+
+width_plot
+```
+
+The results of these tests are 0.09223683 for the width coefficient and -0.2051259 for the height coefficient. This suggests that there is a slight positive linear correlation between width and contributing area and a slight negative linear correlation between height and contributing area.
+
+The reason the data appear to fit in bins is because the surveyed channel reaches are much longer than our modeled reach lengths. \
